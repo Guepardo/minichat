@@ -14,10 +14,19 @@
     }
 
     .video-tiles-box video {
-      background-color: black;
+      background-color: #111111;
       flex: 1
     }
 
+    audio::-webkit-media-controls-timeline,
+    video::-webkit-media-controls-timeline {
+        display: none;
+    }
+
+    audio::-webkit-media-controls,
+    video::-webkit-media-controls {
+        display: none;
+    }
 
     .messages-box {
       width: 300px;
@@ -156,9 +165,9 @@
         roomController.on('stream', (id, stream) => {
           console.log({ stream, id });
           let vid = document.createElement('video');
-          vid.setAttribute('autoplay', '');
+          vid.setAttribute('autoplay', true);
           vid.setAttribute('id', id);
-          vid.setAttribute('controls', 'false');
+          vid.setAttribute('controls', false);
           vid.setAttribute('class', 'd-flex');
           debugger
           vid.volume = 1;
@@ -174,7 +183,7 @@
 
         navigator.mediaDevices.getUserMedia({
           video: true,
-          audio: false
+          audio: true
         }).then((stream) => {
           roomController.addStream(stream)
         }).catch(() => { })

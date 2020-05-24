@@ -16,4 +16,7 @@
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
 const Route = use('Route')
 
-Route.on('/').render('welcome')
+
+Route.get('/', 'RoomController.create').as('room.create')
+Route.post('/', 'RoomController.store').as('room.store')
+Route.get('/:code', 'RoomController.show').as('room.show')

@@ -21,7 +21,12 @@ class RoomController {
   }
 
   async show({ view, params }) {
-    return view.render('room.show', { code: params.code })
+    const room = await Room.findByOrFail('code', params.code)
+
+    return view.render('room.show', {
+      code: params.code,
+      name: room.name
+    })
   }
 }
 

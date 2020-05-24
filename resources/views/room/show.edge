@@ -2,9 +2,22 @@
 
 @section('styles')
   <style>
+
+    html {
+      height: 100%;
+    }
+    body {
+      min-height: 100%;
+    }
     .video-tiles-box {
       flex: 1
     }
+
+    .video-tiles-box video {
+      background-color: black;
+      flex: 1
+    }
+
 
     .messages-box {
       width: 300px;
@@ -89,17 +102,29 @@
             </p>
           </div>
           <div class="d-flex chat-input-wrapper">
-            <input type="text" v-on:keydown.enter="submitMessage" v-model="inputMessage">
+            <input type="text" placeholder="Envie uma mensagem aqui..." v-on:keydown.enter="submitMessage" v-model="inputMessage">
           </div>
         </div>
       </div>
 
       <div class="d-flex justify-content-center align-items-center action-bar-wrapper">
-        <div class="action-buttom m-1" v-on:click="alert('olar')">
+        <div class="action-buttom d-flex justify-content-center align-items-center m-1" v-on:click="toggleCamera">
+          <span class="fa-stack fa-lg">
+            <i class="fa fa-video-camera fa-stack-1x"></i>
+            <i v-if="!cameraActive" class="fa fa-ban fa-stack-2x text-danger" style="color:red;"></i>
+          </span>
         </div>
-        <div class="action-buttom m-1" v-on:click="alert('olar')">
+        <div class="action-buttom d-flex justify-content-center align-items-center m-1" v-on:click="toggleMicrophone">
+          <span class="fa-stack fa-lg">
+            <i class="fa fa-microphone fa-stack-1x"></i>
+            <i v-if="!microphoneActive" class="fa fa-ban fa-stack-2x text-danger" style="color:red;"></i>
+          </span>
         </div>
-        <div class="action-buttom m-1" v-on:click="alert('olar')">
+        <div class="action-buttom d-flex justify-content-center align-items-center m-1" v-on:click="leaveRoom">
+          <span class="fa-stack fa-lg">
+            <i class="fa fa-phone fa-stack-1x"></i>
+            <i class="fa fa-ban fa-stack-2x text-danger" style="color:red;"></i>
+          </span>
         </div>
       </div>
   </div>
@@ -119,7 +144,9 @@
       data: {
         messages: [],
         inputMessage: "",
-        streams: []
+        streams: [],
+        microphoneActive: true,
+        cameraActive: true,
       },
 
       created: function() {
@@ -131,7 +158,9 @@
           let vid = document.createElement('video');
           vid.setAttribute('autoplay', '');
           vid.setAttribute('id', id);
-          vid.setAttribute('controls', '');
+          vid.setAttribute('controls', 'false');
+          vid.setAttribute('class', 'd-flex');
+          debugger
           vid.volume = 1;
           document.querySelector('.video-tiles-box').appendChild(vid);
           setTimeout(() => {
@@ -144,8 +173,8 @@
         })
 
         navigator.mediaDevices.getUserMedia({
-          video: false,
-          audio: true
+          video: true,
+          audio: false
         }).then((stream) => {
           roomController.addStream(stream)
         }).catch(() => { })
@@ -171,6 +200,18 @@
           roomController.broadcast(this.inputMessage)
           this.addMessage('Self', this.inputMessage)
           this.inputMessage = ''
+        },
+
+        toggleMicrophone: function() {
+          this.microphoneActive = !this.microphoneActive
+        },
+
+        toggleCamera: function() {
+          this.cameraActive = !this.cameraActive
+        },
+
+        leaveRoom: function() {
+          window.location = '/'
         }
       }
     })

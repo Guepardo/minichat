@@ -23,7 +23,6 @@ class RoomController {
   }
 
   onSignalPeer({ signal, socketId }) {
-    console.log(socketId, signal)
     this.getSockets().map(otherSocket => {
       if (otherSocket.id === socketId) {
         otherSocket.emit('signalPeer', {
@@ -36,7 +35,6 @@ class RoomController {
   }
 
   onClose() {
-    console.log('onClose')
     this.getSockets().map(socket => socket.emit('onClose', this.socket.id))
   }
 }

@@ -106,12 +106,15 @@ class RoomController {
     }
   }
 
-  // TODO: Estudar se isso é viável.
-  broadcastStream(stream) {
-    for (let socketId in this.peers) {
-      if (this.peers.hasOwnProperty(socketId) && this.peers[socketId] != null) {
-        this.peers[socketId].addStream(stream)
-      }
+  toggleActiveVideoStream() {
+    if (this.stream) {
+      this.stream.getVideoTracks().map(track => track.enabled = !track.enabled)
+    }
+  }
+
+  toggleActiveAudioStream() {
+    if (this.stream) {
+      this.stream.getAudioTracks().map(track => track.enabled = !track.enabled)
     }
   }
 

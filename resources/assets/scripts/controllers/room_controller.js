@@ -15,7 +15,6 @@ class RoomController {
   }
 
   connect() {
-    debugger
     const websocket = Ws().connect()
 
     websocket.on('open', () => { })
@@ -43,6 +42,10 @@ class RoomController {
         this.peers[socketIdFrom] = this.createPeer(socketIdFrom, false)
       }
       this.peers[socketIdFrom].signal(signal)
+    })
+
+    this.room.on('onConnection', socketId => {
+      this.fire('onConnection', socketId)
     })
 
     this.room.on('onClose', (socketId) => {

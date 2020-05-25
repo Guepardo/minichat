@@ -8,10 +8,15 @@ class RoomController {
     this.socket.emit('socketId', this.socket.id)
 
     this.initializePeers()
+    this.notifyNewConnection()
   }
 
   getSockets() {
     return Array.from(this.subscriptions.get(this.socket.topic))
+  }
+
+  notifyNewConnection() {
+    this.socket.broadcast('onConnection', this.socket.id)
   }
 
   initializePeers() {

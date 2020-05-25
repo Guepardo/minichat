@@ -1,7 +1,7 @@
+// import alertify from 'alertifyjs'
 import RoomController from './controllers/room_controller'
 
 const roomController = new RoomController()
-let globalStream;
 
 var app = new Vue({
   el: '#app',
@@ -14,6 +14,7 @@ var app = new Vue({
   },
 
   created: function () {
+    alertify.set('notifier','position', 'top-left');
     roomController.connect()
     roomController.on('data', this.addMessage)
 
@@ -33,6 +34,11 @@ var app = new Vue({
 
     roomController.on('removeStream', socketId => {
       document.getElementById(socketId).remove()
+      alertify.message(`Usuário ${socketId} saiu da sala.`)
+    })
+
+    roomController.on('onConnection', socketId => {
+      alertify.success(`Usuário ${socketId} entrou da sala.`)
     })
 
     navigator.mediaDevices.getUserMedia({

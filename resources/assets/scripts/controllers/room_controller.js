@@ -1,3 +1,6 @@
+import Ws from '@adonisjs/websocket-client/index'
+import SimplePeer from 'simple-peer'
+
 class RoomController {
   constructor() {
     this.room = null
@@ -12,7 +15,8 @@ class RoomController {
   }
 
   connect() {
-    const websocket = adonis.Ws().connect()
+    debugger
+    const websocket = Ws().connect()
 
     websocket.on('open', () => { })
     websocket.on('error', () => { })
@@ -138,3 +142,4 @@ class RoomController {
   }
 }
 
+export default RoomController
